@@ -2,11 +2,11 @@
 
 var fs = require('fs');
 
-function load(path, res) {
+function load(fileName, req, res) {
     var contentType = setHeaders(fileName.split('.')[1]);
 
     var path = 'view' + fileName;
-    console.log("path", path);
+    //console.log("path", path);
 
     fs.stat( path , ( err, stats ) => {
 
