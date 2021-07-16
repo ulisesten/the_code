@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+var get = require('../server/get/get');
+var post = require('../server/post/post');
+//var view = require('../server/static/static');
+
+function app( req, res){
+
+    var mUse = false;
+
+    req.url = req.url.replace(/^(\.\.[\/\\])+/, '');
+
+    if(req.method === 'GET')
+        
+        get( req, res);
+
+    else if (req.method === 'POST')
+
+        post( req, res );
+
+    else
+
+        res.end();
+        
+}
+
+module.exports = app;

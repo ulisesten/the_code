@@ -1,0 +1,17 @@
+{
+  "name": "the_code",
+  "version": "1.0.0",
+  "description": "template for node.js",
+  "main": "bin/www",
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "IP=0.0.0.0 PORT=8080 mocha tests/*_test.js --exit"
+  },
+  "author": "ulisesten",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^9.0.2"
+  }
+}

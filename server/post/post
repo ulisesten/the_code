@@ -1,0 +1,37 @@
+#! /usr/bin/env node
+
+function post(req, res) {
+    if(req.url === '/post_test'){
+        post_test(req,res);
+    }
+}
+
+function post_test(req, res){
+    let body = '';
+
+    req.on('data', data => { body += data; })
+
+    req.on('end', () => {
+        body = parseJson(body);
+
+        if(body !== null){
+            res.writeHead(200);
+        } else {
+            res.writeHead(403);
+        }
+
+        res.end();
+    })
+}
+
+function parseJson(json){
+    try {
+        console.log('parseJson:','Parsing json');
+        return JSON.parse(json);
+    } catch(ex){
+        console.log('[BAD!]parseJson:','Bad request');
+        return null;
+    }
+}
+
+module.exports = post;

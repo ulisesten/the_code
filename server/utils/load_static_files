@@ -1,0 +1,95 @@
+#! /usr/bin/env node
+
+var fs = require('fs');
+
+function load(path, res) {
+    var contentType = setHeaders(fileName.split('.')[1]);
+
+    var path = 'view' + fileName;
+    console.log("path", path);
+
+    fs.stat( path , ( err, stats ) => {
+
+        if( err ) {
+            res.setHeader = 404;
+            res.write('Error 404: Page not found.\n');
+            res.end();
+            return;
+        }
+
+        var modified = Date.parse(stats.mtime);
+        var clienttime = Date.parse(req.headers['if-modified-since']);
+
+        if( modified > clienttime || !clienttime ){
+
+            var newheaders = { 'Content-Type': contentType
+                             , 'Last-Modified': stats.mtime + ';'
+                             , 'cache-control': 'max-age=0, private, must-revalidate;'
+                             };
+
+            
+            fs.readFile( 'view' + fileName, function(err, data){
+                if(!err){
+                    res.writeHead(200, newheaders);
+                    res.write(data);
+                } else if( !data || err ){
+                    console.log(err);
+                    res.writeHead(404);
+                }
+                res.end()
+            });
+
+        } else {
+
+            var headers = { 'Content-Type': contentType };
+            res.writeHead(304, headers)
+            res.end();
+
+        }
+
+    });
+}
+
+
+function sendHtml(path, res){
+
+    var headers = {'Content-Type': 'text/html; charset=utf-8'}
+     
+    fs.readFile(path, function(err, data){
+        if(!err){
+           res.writeHead(200, headers)
+           res.write(data)
+        } else {
+            console.log('load_static_files/senHtml()', err);
+            res.write("not found");
+            res.writeHead(404)
+        }
+        res.end()
+    })
+
+}
+
+function setHeaders(ext){
+    var contentType;
+
+    switch(ext) {
+    
+        case 'js':
+            contentType = 'text/javascript; charset=utf-8';
+        break;
+
+        case 'css':
+            contentType = 'text/css; charset=utf-8';
+        break;
+        
+    }
+
+    return contentType;
+
+}
+
+
+module.exports = {
+    load,
+    sendHtml
+}

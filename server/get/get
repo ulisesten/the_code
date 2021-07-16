@@ -1,0 +1,13 @@
+#! /usr/bin/env node
+
+var static = require('../utils/load_static_files');
+
+function get(req, res){
+    if(req.url === '/')
+        static.sendHtml('./view/html/home.html', res);
+    else {
+        res.end();
+    }
+}
+
+module.exports = get;
